@@ -11,9 +11,8 @@ class Img extends Block
 
     protected function vlInitialize($label)
     {
-    	$label = filter_var($label, FILTER_VALIDATE_URL) ? $label : asset($label);
-    	
+        $label = filter_var($label, FILTER_VALIDATE_URL) ? $label : asset($label);
+
         parent::vlInitialize($label);
     }
-    
 }

@@ -1,16 +1,16 @@
-<?php 
+<?php
 
 namespace Kompo\Komponents\Traits;
 
 trait HasInputAttributes
 {
     /**
-     * Sets the type attribute of the input. Ex: 'text', 'number', 'password', ... 
+     * Sets the type attribute of the input. Ex: 'text', 'number', 'password', ...
      * The default is 'text'.
      *
-     * @param      string  $type   The HTML input type attribute
+     * @param string $type The HTML input type attribute
      *
-     * @return self  
+     * @return self
      */
     public function type($type = 'text') //user-shortcut only
     {
@@ -20,83 +20,88 @@ trait HasInputAttributes
     //For internal use
     public function inputType($type = 'text')
     {
-    	return $this->data([
-    		'inputType' => $type
-    	]);
+        return $this->data([
+            'inputType' => $type,
+        ]);
     }
 
     /**
      * Sets the maxlength attribute of the input.
      *
-     * @param      number  $maxlength   The HTML input maxlength attribute
+     * @param number $maxlength The HTML input maxlength attribute
      *
-     * @return self  
+     * @return self
      */
     public function maxlength($maxlength)
     {
         $this->data([
-            'inputMaxlength' => $maxlength
+            'inputMaxlength' => $maxlength,
         ]);
+
         return $this;
     }
 
     /**
      * Sets the min attribute of the input.
      *
-     * @param      number  $min   The HTML input min attribute
+     * @param number $min The HTML input min attribute
      *
-     * @return self  
+     * @return self
      */
     public function min($min)
     {
-    	$this->data([
-    		'inputMin' => $min
-    	]);
-    	return $this;
+        $this->data([
+            'inputMin' => $min,
+        ]);
+
+        return $this;
     }
 
     /**
      * Sets the max attribute of the input.
      *
-     * @param      number  $max   The HTML input max attribute
+     * @param number $max The HTML input max attribute
      *
-     * @return self  
+     * @return self
      */
     public function max($max)
     {
-    	$this->data([
-    		'inputMax' => $max
-    	]);
-    	return $this;
+        $this->data([
+            'inputMax' => $max,
+        ]);
+
+        return $this;
     }
 
     /**
      * Sets the step attribute of the input.
      *
-     * @param      number  $step   The HTML input step attribute
+     * @param number $step The HTML input step attribute
      *
-     * @return self  
+     * @return self
      */
     public function step($step)
     {
-    	$this->data([
-    		'inputStep' => $step
-    	]);
-    	return $this;
+        $this->data([
+            'inputStep' => $step,
+        ]);
+
+        return $this;
     }
 
     /**
      * Sets the pattern attribute of the input.
      *
-     * @param      string  $pattern   The HTML input pattern attribute
+     * @param string $pattern The HTML input pattern attribute
      *
-     * @return self  
+     * @return self
      */
     public function pattern($pattern)
     {
-    	$this->data([
-    		'inputPattern' => $pattern
-    	]);
-    	return $this;
+        $this->data([
+            'inputPattern' => $pattern,
+        ]);
+
+        return $this;
     }
 }

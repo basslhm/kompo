@@ -2,21 +2,21 @@
 
 namespace Kompo;
 
-use Kompo\Komposers\Query\QueryBooter;
 use Kompo\Komposers\Komposer;
+use Kompo\Komposers\Query\QueryBooter;
 
 abstract class Query extends Komposer
 {
     /**
      * The card vue component name or Card class to display an item.
-     * 
+     *
      * @var Kompo\Card|string
      */
     public $card;
 
     /**
      * The query's layout component.
-     * 
+     *
      * @var string
      */
     public $layout = 'Horizontal';
@@ -28,84 +28,83 @@ abstract class Query extends Komposer
      */
     public $vueComponent = 'FormQuery';
 
-
     /**
      * The Query results.
      */
     public $query; //--> TODO: move to data
-    
+
     /**
-     * The Query filter Komponents
+     * The Query filter Komponents.
      */
     public $filters; //--> TODO: move to data
 
     /**
-     * Make the query orderable with back-end support
+     * Make the query orderable with back-end support.
      *
-     * @var boolean
+     * @var bool
      */
     public $orderable = false;
 
     /**
      * When dealing with non-eloquent Queries, this specifies the primary key.
      *
-     * @var        string
+     * @var string
      */
     public $keyName = 'id';
-    
+
     /**
-     * The headers of a Table Query
+     * The headers of a Table Query.
      *
      * @var array
      */
     public $headers = [];
 
     /**
-     * Whether to display pagination links or not
+     * Whether to display pagination links or not.
      *
-     * @var        boolean
+     * @var bool
      */
     public $hasPagination = true;
 
     /**
-     * Whether to display pagination links above the cards
+     * Whether to display pagination links above the cards.
      *
-     * @var        boolean
+     * @var bool
      */
     public $topPagination = true;
 
     /**
      * Whether to display pagination links below the cards.
      *
-     * @var        boolean
+     * @var bool
      */
     public $bottomPagination = false;
 
     /**
      * Whether to align pagination links to the left or to the right.
      *
-     * @var        boolean
+     * @var bool
      */
     public $leftPagination = false;
 
     /**
      * The pagination links style.
      *
-     * @var        string
+     * @var string
      */
     public $paginationStyle = 'Links';
 
     /**
      * The default message that displays when no items are found (or translation key if multi-language app).
      *
-     * @var        string
+     * @var string
      */
     public $noItemsFound = 'No items found';
 
     /**
      * The default number of items per page.
      *
-     * @var        integer
+     * @var int
      */
     public $perPage = 50;
 
@@ -116,40 +115,42 @@ abstract class Query extends Komposer
      */
     public $model;
 
-	/**
-     * Constructs a Query
-     * 
+    /**
+     * Constructs a Query.
+     *
      * @param null|array $store (optional) Additional data passed to the komponent.
      *
      * @return self
      */
-	public function __construct($store = [], $dontBoot = false)
-	{
-        if(!$dontBoot)
+    public function __construct($store = [], $dontBoot = false)
+    {
+        if (!$dontBoot) {
             QueryBooter::bootForDisplay($this, $store);
-	}
+        }
+    }
 
     /**
      * The overridable method to load the query that will be displayed in the query.
      *
      * @return Illuminate\Database\Eloquent\Builder|
-     *         Illuminate\Database\Eloquent\Model|
-     *         Illuminate\Database\Query\Builder|
-     *         Illuminate\Database\Eloquent\Relations\Relation|
-     *         Illuminate\Support\Collection|
-     *         array
+     *                                               Illuminate\Database\Eloquent\Model|
+     *                                               Illuminate\Database\Query\Builder|
+     *                                               Illuminate\Database\Eloquent\Relations\Relation|
+     *                                               Illuminate\Support\Collection|
+     *                                               array
      */
     public function query()
     {
-        if( $model = $this->model )
+        if ($model = $this->model) {
             return new $model();
+        }
     }
 
     /**
-     * The method that contains the card information. 
+     * The method that contains the card information.
      * Each item from the query will pass through this method and be transformed according to it's specs.
      *
-     * @param mixed  $item  An item from the query
+     * @param mixed $item An item from the query
      *
      * @return array|Kompo\Card
      */
@@ -159,10 +160,25 @@ abstract class Query extends Komposer
     }*/
 
     //Query filters
-    public function top(){ return []; }
-    public function bottom(){ return []; }
-    public function left(){ return []; }
-    public function right(){ return []; }
+    public function top()
+    {
+        return [];
+    }
+
+    public function bottom()
+    {
+        return [];
+    }
+
+    public function left()
+    {
+        return [];
+    }
+
+    public function right()
+    {
+        return [];
+    }
 
     /**
      * Get the filter/browse request's validation rules.
@@ -177,9 +193,9 @@ abstract class Query extends Komposer
     /**
      * Assigns the page for browsing the query.
      *
-     * @param  integer|null  $currentPage (optional) The current query page number.
-     * 
-     * @return integer
+     * @param int|null $currentPage (optional) The current query page number.
+     *
+     * @return int
      */
     public function currentPage($currentPage = null)
     {
@@ -207,7 +223,7 @@ abstract class Query extends Komposer
     }
 
     /**
-     * Methods that can be called both statically or non-statically
+     * Methods that can be called both statically or non-statically.
      *
      * @return array
      */

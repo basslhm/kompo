@@ -10,8 +10,8 @@ use Kompo\Komposers\KomposerManager;
 
 abstract class Komponent extends Element
 {
-    use Traits\HasHtmlAttributes,
-        Traits\UsedInTables;
+    use Traits\HasHtmlAttributes;
+    use Traits\UsedInTables;
     /**
      * The component's label.
      *
@@ -20,9 +20,10 @@ abstract class Komponent extends Element
     public $label;
 
     /**
-     * Constructs a Kompo\Komponent object
+     * Constructs a Kompo\Komponent object.
      *
-     * @param  string $label
+     * @param string $label
+     *
      * @return void
      */
     public function __construct($label = '')
@@ -33,7 +34,8 @@ abstract class Komponent extends Element
     /**
      * Initializes a komponent.
      *
-     * @param  string $label
+     * @param string $label
+     *
      * @return void
      */
     protected function vlInitialize($label)
@@ -41,17 +43,16 @@ abstract class Komponent extends Element
         KompoId::setForKomponent($this, $label);
         $this->label = $label ? __($label) : '';
     }
-    
-	/**
+
+    /**
      * Passes Form attributes to the component.
      *
      * @return void
      */
     public function prepareForDisplay($komposer)
     {
-
     }
-    
+
     /**
      * Passes Form attributes to the component.
      *
@@ -59,26 +60,30 @@ abstract class Komponent extends Element
      */
     public function prepareForAction($komposer)
     {
-        if($this->data('includes') && KompoAction::is('eloquent-save'))
+        if ($this->data('includes') && KompoAction::is('eloquent-save')) {
             KomposerManager::prepareKomponentsForAction($komposer, $this->data('includes'), true);
+        }
     }
 
     /**
      * Overwrite the initially set label.
      *
-     * @param  string $label
+     * @param string $label
+     *
      * @return Element
      */
     public function labelNonStatic($label)
     {
         $this->label = $label;
+
         return $this;
     }
 
     /**
      * Overwrite the initially set label.
      *
-     * @param  string $label
+     * @param string $label
+     *
      * @return Element
      */
     public static function labelStatic(...$arguments)
@@ -89,13 +94,14 @@ abstract class Komponent extends Element
     /**
      * Adds an icon before component's label.
      *
-     * @param  string $iconString This is the icon HTML or icon class in &lt;i class="...">&lt;/i>
-     * 
+     * @param string $iconString This is the icon HTML or icon class in &lt;i class="...">&lt;/i>
+     *
      * @return Element
      */
     public function iconNonStatic($iconString)
     {
-        $this->data(['icon' => IconGenerator::toHtml($iconString) ]);
+        $this->data(['icon' => IconGenerator::toHtml($iconString)]);
+
         return $this;
     }
 
@@ -104,18 +110,17 @@ abstract class Komponent extends Element
         return static::form('')->icon($iconString);
     }
 
-
-
     /**
      * Adds an icon after component's label.
      *
-     * @param  string $iconString This is the icon HTML or icon class in &lt;i class="...">&lt;/i>
-     * 
+     * @param string $iconString This is the icon HTML or icon class in &lt;i class="...">&lt;/i>
+     *
      * @return Element
      */
     public function rIconNonStatic($iconString)
     {
-        $this->data(['rIcon' => IconGenerator::toHtml($iconString) ]);
+        $this->data(['rIcon' => IconGenerator::toHtml($iconString)]);
+
         return $this;
     }
 
@@ -125,7 +130,7 @@ abstract class Komponent extends Element
     }
 
     /**
-     * Methods that can be called both statically or non-statically
+     * Methods that can be called both statically or non-statically.
      *
      * @return array
      */

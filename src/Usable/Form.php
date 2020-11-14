@@ -6,11 +6,10 @@ use Kompo\Core\ValidationManager;
 use Kompo\Komposers\Form\FormBooter;
 use Kompo\Komposers\Form\HasModel;
 use Kompo\Komposers\Komposer;
-use Kompo\Routing\Router;
 
 abstract class Form extends Komposer
 {
-	use HasModel;
+    use HasModel;
 
     /**
      * The Vue component to render the Form.
@@ -25,30 +24,30 @@ abstract class Form extends Komposer
      * @var string
      */
     public $bladeComponent = 'Form';
-    
+
     /**
      * Disable adding default margins for Form komponents.
      *
-     * @var boolean
+     * @var bool
      */
     public $noMargins = false;
 
     /**
      * Prevent emitting the form data to it's closest parent.
      *
-     * @var boolean
+     * @var bool
      */
     public $emitFormData = true;
 
     /**
      * Prevent submitting a form.
      *
-     * @var boolean
+     * @var bool
      */
     protected $preventSubmit = false;
 
     /**
-     * Custom submit route for quick use (if the route has no parameters)
+     * Custom submit route for quick use (if the route has no parameters).
      *
      * @var string
      */
@@ -88,36 +87,37 @@ abstract class Form extends Komposer
      * @var array
      */
     public $komponents = [];  //--> TODO: move to data
-    
+
     /**
      * If you wish to reload the form after submit/saving the model, set to true.
      *
-     * @var boolean
+     * @var bool
      */
     protected $refresh = false;
 
-	/**
-     * Constructs a Form
-     * 
+    /**
+     * Constructs a Form.
+     *
      * @param null|int|string $modelKey (optional) The record's key or id in the DB table.
-     * @param null|array $store (optional) Additional data passed to the komponent.
+     * @param null|array      $store    (optional) Additional data passed to the komponent.
      *
      * @return self
      */
-	public function __construct($modelKey = null, $store = [], $dontBoot = false)
-	{
+    public function __construct($modelKey = null, $store = [], $dontBoot = false)
+    {
         $this->_kompo('options', [
-            'preventSubmit' => $this->preventSubmit,
-            'submitTo' => $this->submitTo,
-            'submitMethod' => $this->submitMethod,
-            'redirectTo' => $this->redirectTo,
+            'preventSubmit'   => $this->preventSubmit,
+            'submitTo'        => $this->submitTo,
+            'submitMethod'    => $this->submitMethod,
+            'redirectTo'      => $this->redirectTo,
             'redirectMessage' => $this->redirectMessage,
-            'refresh' => $this->refresh
+            'refresh'         => $this->refresh,
         ]);
 
-		if(!$dontBoot)
-        	FormBooter::bootForDisplay($this, $modelKey, $store);
-	}
+        if (!$dontBoot) {
+            FormBooter::bootForDisplay($this, $modelKey, $store);
+        }
+    }
 
     /**
      * Get the Komponents displayed in the form.
@@ -169,7 +169,6 @@ abstract class Form extends Komposer
         ValidationManager::addRulesToKomposer($this->data('rules'), $komposer);
     }
 
-
     /**
      * Shortcut method to render a Form into it's Vue component.
      *
@@ -191,7 +190,7 @@ abstract class Form extends Komposer
     }
 
     /**
-     * Methods that can be called both statically or non-statically
+     * Methods that can be called both statically or non-statically.
      *
      * @return array
      */
@@ -209,13 +208,13 @@ abstract class Form extends Komposer
      */
     public function __toString()
     {
-        if(
-            (property_exists($this, 'hideModel') && $this->hideModel) || 
+        if (
+            (property_exists($this, 'hideModel') && $this->hideModel) ||
             (!property_exists($this, 'hideModel') && config('kompo.eloquent_form.hide_model_in_forms'))
-        )
+        ) {
             unset($this->model);
+        }
 
         return json_encode($this);
     }
-
 }

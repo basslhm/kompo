@@ -8,8 +8,9 @@ use Kompo\Interactions\Traits\HasInteractions;
 
 abstract class Komposer extends Element
 {
-    use HasInteractions, ForwardsInteraction;
-    
+    use HasInteractions;
+    use ForwardsInteraction;
+
     /**
      * The meta komponent's data for internal usage. Contains the store, route parameters, etc...
      *
@@ -17,9 +18,9 @@ abstract class Komposer extends Element
      */
     protected $_kompo = [
         'parameters' => [],
-        'store' => [],
-        'fields' => [],
-        'options' => []
+        'store'      => [],
+        'fields'     => [],
+        'options'    => [],
     ];
 
     /**
@@ -29,16 +30,16 @@ abstract class Komposer extends Element
      */
     protected $metaTags = [];
 
-	/**
-	 * This method is fired at the very beginning of the booting process (even before created).
-	 * Handles booting authorization logic.
-	 *
-	 * @return boolean Is booting the Komposer authorized or not?
-	 */
-	public function authorizeBoot()
-	{
-		return true;
-	}
+    /**
+     * This method is fired at the very beginning of the booting process (even before created).
+     * Handles booting authorization logic.
+     *
+     * @return bool Is booting the Komposer authorized or not?
+     */
+    public function authorizeBoot()
+    {
+        return true;
+    }
 
     /**
      * Gets the failed authorization message, if defined.
@@ -53,7 +54,8 @@ abstract class Komposer extends Element
     /**
      * Assign additional session data to the komposer. Or retrieve it if parameter is a string key.
      *
-     * @param  mixed  $data
+     * @param mixed $data
+     *
      * @return mixed
      */
     public function store($data = null)
@@ -64,7 +66,8 @@ abstract class Komposer extends Element
     /**
      * Gets the route's parameter or the one persisted in the session.
      *
-     * @param  string|array|null  $parameter
+     * @param string|array|null $parameter
+     *
      * @return mixed
      */
     public function parameter($data = null)
@@ -79,7 +82,6 @@ abstract class Komposer extends Element
      */
     public function prepareForDisplay($komposer)
     {
-
     }
 
     /**
@@ -89,7 +91,6 @@ abstract class Komposer extends Element
      */
     public function prepareForAction($komposer)
     {
-
     }
 
     /**
@@ -102,5 +103,4 @@ abstract class Komposer extends Element
     {
         return ($this->metaTags && count($this->metaTags)) ? $this->metaTags : null;
     }
-    
 }
