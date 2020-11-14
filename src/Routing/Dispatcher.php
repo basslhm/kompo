@@ -22,8 +22,9 @@ class Dispatcher
 
     public function __construct($komposerClass = null)
     {
-        if(!$komposerClass)
+        if (!$komposerClass) {
             $this->bootInfo = KompoInfo::getKompo();
+        }
 
         $this->komposerClass = $komposerClass ?: $this->bootInfo['kompoClass'];
 
@@ -31,11 +32,12 @@ class Dispatcher
 
         $this->booter = 'Kompo\\Komposers\\'.$this->type.'\\'.$this->type.'Booter';
     }
-    
+
     public static function dispatchConnection()
     {
-        if(KompoAction::is('refresh-self'))
+        if (KompoAction::is('refresh-self')) {
             return with(new static())->rebootKomposerForDisplay();
+        }
 
         return KomposerHandler::performAction(static::bootKomposerForAction());
     }
@@ -48,37 +50,38 @@ class Dispatcher
         return $booter::bootForAction($dispatcher->bootInfo);
     }
 
-    public function bootKomposerForDisplay() 
+    public function bootKomposerForDisplay()
     {
         $booter = $this->booter;
 
-        if($this->type == 'Form'){
+        if ($this->type == 'Form') {
             return $booter::bootForDisplay($this->komposerClass, request('id'), request()->except('id'));
-        }else{
+        } else {
             return $booter::bootForDisplay($this->komposerClass, request()->all());
         }
     }
 
-    public function rebootKomposerForDisplay() 
+    public function rebootKomposerForDisplay()
     {
         $booter = $this->booter;
 
-        if($this->type == 'Form'){
+        if ($this->type == 'Form') {
             return $booter::bootForDisplay($this->komposerClass, $this->bootInfo['modelKey'], $this->bootInfo['store'], $this->bootInfo['parameters']);
-        }else{
+        } else {
             return $booter::bootForDisplay($this->komposerClass, $this->bootInfo['store'], $this->bootInfo['parameters']);
         }
     }
 
     public static function getKomposerType($komposerClass)
     {
-        if(is_a($komposerClass, Form::class, true)){
+        if (is_a($komposerClass, Form::class, true)) {
             return 'Form';
-        }elseif (is_a($komposerClass, Query::class, true)) {
+        } elseif (is_a($komposerClass, Query::class, true)) {
             return 'Query';
-        }elseif (is_a($komposerClass, Menu::class, true)) {
+        } elseif (is_a($komposerClass, Menu::class, true)) {
             return 'Menu';
         }
+
         throw new NotBootableFromRouteException($komposerClass);
     }
 }

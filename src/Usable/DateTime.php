@@ -2,8 +2,6 @@
 
 namespace Kompo;
 
-use Kompo\Date;
-
 class DateTime extends Date
 {
     protected $dbFormat = 'Y-m-d H:i:s';
@@ -14,8 +12,7 @@ class DateTime extends Date
         parent::vlInitialize($label);
 
         $this->data([
-            'enableTime' => true
+            'enableTime' => true,
         ]);
     }
-
 }

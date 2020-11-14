@@ -1,4 +1,5 @@
 <?php
+
 namespace Kompo\Komposers\Form;
 
 use Kompo\Core\KompoInfo;
@@ -29,31 +30,33 @@ class FormDisplayer extends FormBooter
     protected static function prepareSubmitRedirectRoutes($form)
     {
         $form->data([
-            'emitFormData' => $form->emitFormData
+            'emitFormData' => $form->emitFormData,
         ]);
 
         $options = $form->_kompo('options');
 
-        if($options['preventSubmit'])
+        if ($options['preventSubmit']) {
             return;
+        }
 
         $form->data([
             'submitUrl' => $options['submitTo'] ? RouteFinder::matchRoute($options['submitTo']) :
-                    ($form->submitUrl() ? : 
+                    ($form->submitUrl() ?:
                     ((method_exists($form, 'handle') || $form->model) ? RouteFinder::getKompoRoute() : null)),
-            'submitMethod' => $options['submitMethod']
+            'submitMethod' => $options['submitMethod'],
         ]);
 
-        if($form->data('submitUrl') == RouteFinder::getKompoRoute())
+        if ($form->data('submitUrl') == RouteFinder::getKompoRoute()) {
             $form->data([
-                'submitAction' => method_exists($form, 'handle') ? 'handle-submit' : 'eloquent-submit'
+                'submitAction' => method_exists($form, 'handle') ? 'handle-submit' : 'eloquent-submit',
             ]);
+        }
 
-        if($options['redirectTo'])
+        if ($options['redirectTo']) {
             $form->data([
-                'redirectUrl' => RouteFinder::matchRoute($options['redirectTo']),
-                'redirectMessage' => __($options['redirectMessage'])
+                'redirectUrl'     => RouteFinder::matchRoute($options['redirectTo']),
+                'redirectMessage' => __($options['redirectMessage']),
             ]);
+        }
     }
-
 }

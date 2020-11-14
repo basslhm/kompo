@@ -1,8 +1,6 @@
-<?php 
+<?php
 
 namespace Kompo\Database;
-
-use Kompo\Database\QueryOperations;
 
 class DatabaseQuery extends QueryOperations
 {
@@ -22,28 +20,28 @@ class DatabaseQuery extends QueryOperations
 
     public function applyWhere($q, $name, $operator, $value, $table = null)
     {
-        $columnName = ($table? ($table.'.') : '').$name;
-        
-        if($operator == 'IN'){
+        $columnName = ($table ? ($table.'.') : '').$name;
+
+        if ($operator == 'IN') {
             return $q->whereIn($columnName, $value);
-        }elseif($operator == 'LIKE'){
+        } elseif ($operator == 'LIKE') {
             return $q->where($columnName, 'LIKE', '%'.$value.'%');
-        }elseif($operator == 'STARTSWITH'){
+        } elseif ($operator == 'STARTSWITH') {
             return $q->where($columnName, 'LIKE', $value.'%');
-        }elseif($operator == 'ENDSWITH'){
+        } elseif ($operator == 'ENDSWITH') {
             return $q->where($columnName, 'LIKE', '%'.$value);
-        }elseif($operator == 'BETWEEN'){
+        } elseif ($operator == 'BETWEEN') {
             return $q->whereBetween($columnName, $value);
-        }else{
+        } else {
             return $q->where($columnName, $operator, $value);
         }
     }
 
     public function orderItems()
     {
-        collect(request('order'))->each(function($order){
+        collect(request('order'))->each(function ($order) {
             $this->orderQuery()->where($this->modelKeyName(), $order['item_id'])->update([
-                $this->modelOrderColumn() => $order['item_order']
+                $this->modelOrderColumn() => $order['item_order'],
             ]);
         });
     }
@@ -69,8 +67,7 @@ class DatabaseQuery extends QueryOperations
         $temp = $this->query->getQuery();
         $temp->orders = [];
         $this->query->setQuery($temp);
-        foreach(explode('|', $sort) as $colDir)
-        {
+        foreach (explode('|', $sort) as $colDir) {
             $this->sortBy($colDir);
         }
     }
@@ -86,5 +83,4 @@ class DatabaseQuery extends QueryOperations
 
         $this->query->orderBy($sort[0], count($sort) == 2 ? $sort[1] : 'ASC');
     }
-
 }

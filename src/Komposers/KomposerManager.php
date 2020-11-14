@@ -10,75 +10,74 @@ class KomposerManager
 {
     /**
      * A method that gets executed at the beginning of the lifecycle.
-     * 
+     *
      * @param Kompo\Komposers\Komposer $komposer
-     * 
+     *
      * @return Komposer
      */
-	public static function created($komposer)
+    public static function created($komposer)
     {
-    	if(config('kompo.auto_classes_for_komposers') && !$komposer->class())
-        	$komposer->class(class_basename($komposer)); //made this configurable
+        if (config('kompo.auto_classes_for_komposers') && !$komposer->class()) {
+            $komposer->class(class_basename($komposer));
+        } //made this configurable
 
-		if(method_exists($komposer, 'created'))
-			$komposer->created();
+        if (method_exists($komposer, 'created')) {
+            $komposer->created();
+        }
     }
 
     /**
      * A method that gets executed at the end of the display lifecycle.
-     * 
+     *
      * @param Kompo\Komposers\Komposer $komposer
-     * 
+     *
      * @return Komposer
      */
     public static function booted($komposer)
     {
-        if(method_exists($komposer, 'booted'))
+        if (method_exists($komposer, 'booted')) {
             $komposer->booted();
+        }
     }
 
     /**
      * Prepare the Komposer's komponents for display.
-     * 
+     *
      * @param Kompo\Komposers\Komposer $komposer
-     * @param string|null $method
-     * @param boolean $force                     Force the method to run (base method for ex.)
+     * @param string|null              $method
+     * @param bool                     $force    Force the method to run (base method for ex.)
      *
      * @return Collection
      */
     public static function prepareKomponentsForDisplay($komposer, $method = null, $force = false)
     {
-        return static::collectFrom($komposer, $method, $force)->filter()->each( function($component) use ($komposer) {
-
+        return static::collectFrom($komposer, $method, $force)->filter()->each(function ($component) use ($komposer) {
             $component->prepareForDisplay($komposer);
 
             $component->mountedHook($komposer);
-
         })->values()->all();
     }
 
     /**
      * Prepare the Komposer's komponents for a backend action.
-     * 
+     *
      * @param Kompo\Komposers\Komposer $komposer
-     * @param string|null $method
-     * @param boolean $force                     Force the method to run (base method for ex.)
+     * @param string|null              $method
+     * @param bool                     $force    Force the method to run (base method for ex.)
      *
      * @return void
      */
     public static function prepareKomponentsForAction($komposer, $method = null, $force = false)
     {
-        static::collectFrom($komposer, $method, $force)->filter()->each( function($component) use ($komposer) {
-
+        static::collectFrom($komposer, $method, $force)->filter()->each(function ($component) use ($komposer) {
             $component->prepareForAction($komposer);
 
             $component->mountedHook($komposer);
-
         }); //field komponents are pushed to komposer
     }
 
     /**
-     * Returns a collection of FIELD komponents
+     * Returns a collection of FIELD komponents.
      *
      * @param Kompo\Komposers\Komposer $komposer
      *
@@ -86,28 +85,28 @@ class KomposerManager
      */
     public static function collectFields($komposer)
     {
-    	return collect($komposer->_kompo('fields'));
+        return collect($komposer->_kompo('fields'));
     }
 
     /**
-     * Stores field komponents in the Komposer for later use
+     * Stores field komponents in the Komposer for later use.
      *
      * @param Kompo\Komposers\Komposer $komposer
      * @param Kompo\Komponents\Field   $field
-     * 
+     *
      * @return void
      */
     public static function pushField($komposer, $field)
     {
-    	$komposer->_kompo('fields', $field);
+        $komposer->_kompo('fields', $field);
     }
 
     /**
-     * Remove a field from the Komposer after use
+     * Remove a field from the Komposer after use.
      *
      * @param Kompo\Komposers\Komposer $komposer
-     * @param integer   $fieldKey
-     * 
+     * @param int                      $fieldKey
+     *
      * @return void
      */
     public static function removeField($komposer, $fieldKey)
@@ -120,7 +119,7 @@ class KomposerManager
      *
      * @param Kompo\Komposers\Komposer $komposer
      * @param string|null              $method
-     * @param boolean $force                     Force the method to run (base method for ex.)
+     * @param bool                     $force    Force the method to run (base method for ex.)
      *
      * @return Collection
      */
@@ -128,8 +127,8 @@ class KomposerManager
     {
         return Util::collect(
             DependencyResolver::callKomposerMethod(
-                $komposer, 
-                $method ?: KompoTarget::getDecrypted(), 
+                $komposer,
+                $method ?: KompoTarget::getDecrypted(),
                 request()->all(),  //mainly for getKomponents
                 $force
             )

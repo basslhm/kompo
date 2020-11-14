@@ -1,4 +1,5 @@
 <?php
+
 namespace Kompo\Tests\Feature\Routing;
 
 use Kompo\Exceptions\NotBootableFromRouteException;
@@ -7,66 +8,65 @@ use Kompo\Tests\EnvironmentBoot;
 class KomposerRouteAsViewWithLayoutTest extends EnvironmentBoot
 {
     /** @test */
-	public function boot_error_for_unbootable_komponent_from_route_as_view()
-	{
-		$this->prepareRoute('someFakeClassString');
+    public function boot_error_for_unbootable_komponent_from_route_as_view()
+    {
+        $this->prepareRoute('someFakeClassString');
 
-		$this->expectException(NotBootableFromRouteException::class);
+        $this->expectException(NotBootableFromRouteException::class);
 
-		$this->withoutExceptionHandling()->get('test/1');
-	}
-
-    /** @test */
-	public function boot_form_from_route_as_view()
-	{
-		$this->prepareRoute(_RouteParametersForm::class);
-
-		$this->make_route_assertions('vl-form')
-			->assertSee('"modelKey":"1"');
-	}
+        $this->withoutExceptionHandling()->get('test/1');
+    }
 
     /** @test */
-	public function boot_query_from_route_as_view()
-	{
-		$this->prepareRoute(_RouteParametersQuery::class);
+    public function boot_form_from_route_as_view()
+    {
+        $this->prepareRoute(_RouteParametersForm::class);
 
-		$this->make_route_assertions('vl-query');
-	}
+        $this->make_route_assertions('vl-form')
+            ->assertSee('"modelKey":"1"');
+    }
 
     /** @test */
-	public function boot_menu_from_route_as_view()
-	{
-		$this->prepareRoute(_RouteParametersMenu::class);
+    public function boot_query_from_route_as_view()
+    {
+        $this->prepareRoute(_RouteParametersQuery::class);
 
-		$this->make_route_assertions('vl-menu');
-	}
+        $this->make_route_assertions('vl-query');
+    }
 
-	/** ------------------ PRIVATE --------------------------- */ 
+    /** @test */
+    public function boot_menu_from_route_as_view()
+    {
+        $this->prepareRoute(_RouteParametersMenu::class);
 
-	private function prepareRoute($komposerClass)
-	{
-		\Route::layout('kompo::app')->group(function() use($komposerClass) {
-			\Route::kompo('test/{id}', $komposerClass);
-		});
-	} 
+        $this->make_route_assertions('vl-menu');
+    }
 
-	private function make_route_assertions($vueComponent)
-	{
-		return $this->get('test/1')
-			->assertViewIs('kompo::view')
-			->assertViewHas('vueComponent')
-			->assertViewHas('metaTags', [
-				'title' => 'meta-title',
-				'description' => 'meta description',
-				'keywords' => 'key,word'
-			])
-			->assertViewHas('layout', 'kompo::app')
-			->assertViewHas('section', 'content')
-			->assertSee($vueComponent.' :vkompo=')
-			->assertSee('"id":"obj-id"')
-			->assertSee('"parameters":{"id":"1"}')
-			->assertSee('meta-title')
-			->assertSee('meta description')
-			->assertSee('key,word');
-	}
+    /** ------------------ PRIVATE --------------------------- */
+    private function prepareRoute($komposerClass)
+    {
+        \Route::layout('kompo::app')->group(function () use ($komposerClass) {
+            \Route::kompo('test/{id}', $komposerClass);
+        });
+    }
+
+    private function make_route_assertions($vueComponent)
+    {
+        return $this->get('test/1')
+            ->assertViewIs('kompo::view')
+            ->assertViewHas('vueComponent')
+            ->assertViewHas('metaTags', [
+                'title'       => 'meta-title',
+                'description' => 'meta description',
+                'keywords'    => 'key,word',
+            ])
+            ->assertViewHas('layout', 'kompo::app')
+            ->assertViewHas('section', 'content')
+            ->assertSee($vueComponent.' :vkompo=')
+            ->assertSee('"id":"obj-id"')
+            ->assertSee('"parameters":{"id":"1"}')
+            ->assertSee('meta-title')
+            ->assertSee('meta description')
+            ->assertSee('key,word');
+    }
 }

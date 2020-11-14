@@ -2,15 +2,15 @@
 
 namespace Kompo;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use Kompo\Http\Middleware\SetKompoLocaleMiddleware;
 use Kompo\Routing\Mixins\ExtendsRoutingTrait;
-use Illuminate\Contracts\Http\Kernel;
 
 class KompoServiceProvider extends ServiceProvider
 {
     use ExtendsRoutingTrait;
-    
+
     /**
      * Bootstrap services.
      *
@@ -28,9 +28,9 @@ class KompoServiceProvider extends ServiceProvider
 
         $this->extendRouting();
 
-        if (file_exists($file = __DIR__.'/../Core/KompoHelpers.php'))
+        if (file_exists($file = __DIR__.'/../Core/KompoHelpers.php')) {
             require_once $file;
-
+        }
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -41,7 +41,7 @@ class KompoServiceProvider extends ServiceProvider
             ]);
         }
 
-        if(count(config('kompo.locales'))){
+        if (count(config('kompo.locales'))) {
             $kernel = $this->app->make(Kernel::class);
 
             $kernel->appendMiddlewareToGroup('web', SetKompoLocaleMiddleware::class);

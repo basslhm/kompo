@@ -8,5 +8,4 @@ class Html extends Block
 {
     public $vueComponent = 'FormHtml';
     public $bladeComponent = 'Html';
-    
 }

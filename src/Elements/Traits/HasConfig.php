@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Kompo\Elements\Traits;
 
@@ -16,44 +16,45 @@ trait HasConfig
     /**
      * Assign or retrieve elements from the internal kompo config object.
      *
-     * @param  mixed  $data
+     * @param mixed $data
+     *
      * @return mixed
      */
     public function _kompo($key, $data = null)
     {
         //ugly code to avoid adding polluting methods to the class
 
-        if(in_array($key, ['modelKey', 'currentPage'])){ //not arrays: set if not found
+        if (in_array($key, ['modelKey', 'currentPage'])) { //not arrays: set if not found
 
-            if($data === null){
+            if ($data === null) {
                 return $this->_kompo[$key] ?? null;
-            }else{
+            } else {
                 $this->_kompo[$key] = $data;
+
                 return $this;
             }
+        } elseif ($key === 'fields') { //storing field Komponents: push
 
-        }elseif($key === 'fields'){ //storing field Komponents: push
-
-            if($data instanceOf Field){
+            if ($data instanceof Field) {
                 array_push($this->_kompo[$key], $data);
+
                 return $this;
-            }elseif(is_integer($data)){
+            } elseif (is_integer($data)) {
                 unset($this->_kompo[$key][$data]);
+
                 return $this;
-            }else{
+            } else {
                 return $this->_kompo[$key];
             }
+        } else { //not arrays: replace or add values if found
 
-        }else{ //not arrays: replace or add values if found
-
-            if(is_array($data)){
+            if (is_array($data)) {
                 $this->_kompo[$key] = array_replace($this->_kompo[$key], $data);
+
                 return $this;
-            }else{
+            } else {
                 return $data === null ? $this->_kompo[$key] : ($this->_kompo[$key][$data] ?? null);
             }
-
         }
     }
-
 }

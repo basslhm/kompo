@@ -8,7 +8,8 @@ use Kompo\Komponents\Trigger;
 
 class Dropdown extends Trigger
 {
-	use HasHref, HasSubmenu;
+    use HasHref;
+    use HasSubmenu;
 
     public $bladeComponent = 'Dropdown';
 }
